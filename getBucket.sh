@@ -18,24 +18,23 @@ getBucketIndex () {
 
 showBucket () {
     basePath='/storage/core/loginsight/cidata/store'
-    num=1
     bucketId=($(grep 'archived' ${bucketIndex} | tail -n ${num} | awk -F', ' '{print $2}' | sed s'/id=//'))
     bucketCount=${#bucketId[@]}
 
     echo -e "\n[TASK] List the last ${num} archived buckets in [${liIp}]\n"
 
     for ((i=0;i<${bucketCount};i++)); do
-        echo -e "Bucket ID: [${bucketId}]"
+        echo -e "Bucket ID: [${bucketId[$i]}]"
         echo "======"
         connect "du -h ${basePath}/${bucketId[$i]}"
         echo "------"
         ## list index
-        echo -e "[index]\n"
-        connect "ls -C -w 120 ${basePath}/${bucketId[$i]}/index"
-        echo "------"
+        #echo -e "[index]\n"
+        #connect "ls -C -w 120 ${basePath}/${bucketId[$i]}/index"
+        #echo "------"
         ## list repository
-        echo -e "[repository]\n"
-        connect "ls ${basePath}/${bucketId[$i]}/repository"
+        echo -e "[repository/data.blob]\n"
+        connect "ls -lh ${basePath}/${bucketId[$i]}/repository/data.blob"
         echo
     done
     exit
@@ -52,6 +51,7 @@ fi
 
 liUser='root'
 bucketIndex="${liIp}_bucket.index"
+num=${1:-2}
 
 if [ ! -f "${bucketIndex}" ]; then
     getBucketIndex

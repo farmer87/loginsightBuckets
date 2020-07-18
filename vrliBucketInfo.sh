@@ -16,7 +16,12 @@ getBucketIndex () {
     #sed -i '/NULL/d' ${bucketIndex}
 }
 
-formatTime () {
+formatTime1 () {
+    date -d "${1}" +"%Y-%m-%d %T"
+}
+
+
+formatTime2 () {
     if [ "$1" != "--" ]; then
         date -d @$(echo ${1::-3}) +"%Y-%m-%d %T"
     else
@@ -28,7 +33,8 @@ getBucketInfo () {
     while IFS= read -r line; do
         id+=($(echo ${line} | awk -F', ' '{print $2}' | sed 's/^id=//'))
         status+=($(echo ${line} | awk -F', ' '{print $3}' | awk '{print $1}' | sed 's/^status=//'))
-        createTime+=($(echo $line | awk -F ', ' '{print $3}' | awk '{print $2}' | sed -e 's/^created=//' -e 's/\..*$//'))
+        createTime+=($(echo $line | awk -F ', ' '{print $3}' | awk '{print $2}' | sed -e 's/^created=//'))
+        # -e 's/\..*$//'))
         sizeMB+=($(echo "scale=2; $(echo ${line} | awk -F', ' '{print $3}' | awk '{print $3}' | sed 's/^size=//') / 1024^2" | bc))
         if [ $(echo ${line} | awk -F', ' '{print $3}' | awk '{print $4}' | grep '[NULL]') ]; then
             startTime+=("--")
@@ -44,18 +50,20 @@ getBucketInfo () {
     bucketCount=${#id[@]}
     activeCount=0
     totalSizeMB=0
+    timeZone=$(date +%Z)
 
-    printf "\n%-37s %-9s %-9s %-20s %-20s %-20s %-12s\n" "ID" "Status" "Size(MB)" "Create-Date" "Start-Date" "End-Date" "Messages"
+    printf "\n%-37s %-9s %-9s %-20s %-20s %-20s %-12s\n" "ID" "Status" "Size(MB)" "Create-Date(${timeZone})" "Start-Date(${timeZone})" "End-Date(${timeZone})" "Messages"
     printf "%-37s %-9s %-9s %-20s %-20s %-20s %-12s\n" "------------------------------------" "--------" "--------" "-------------------" "-------------------" "-------------------" "--------"
     for ((i=0;i<${bucketCount};i++)); do
-    #for ((i=0;i<3;i++)); do
+    #for ((i=0;i<1;i++)); do
         printf "%-37s %-9s %-9s %-20s %-20s %-20s %-10s\n" "${id[$i]}" \
                                                            "${status[$i]}" \
                                                            "${sizeMB[$i]}" \
-                                                           "$(echo ${createTime[$i]} | sed 's/T/\ /')" \
-                                                           "$(formatTime "${startTime[$i]}")" \
-                                                           "$(formatTime "${endTime[$i]}")" \
+                                                           "$(formatTime1 "${createTime[$i]}")" \
+                                                           "$(formatTime2 "${startTime[$i]}")" \
+                                                           "$(formatTime2 "${endTime[$i]}")" \
                                                            "${message[$i]}"
+                                                           #"$(echo ${createTime[$i]} | sed 's/T/\ /')" \
 
         if [ "${status[$i]}" == "active" ]; then
             activeCount=$(expr ${activeCount} + 1)
