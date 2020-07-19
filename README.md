@@ -47,24 +47,6 @@
 
 
 
-/usr/lib/loginsight/application/sbin/bucket-index show | awk -F', ' '{print $2}' | sed 's/^id=//'
 
-buckets=($(/usr/lib/loginsight/application/sbin/bucket-index show | awk -F', ' '{print $2}' | sed 's/^id=//' | tail -n 3))
-for i in ${buckets[@]}; do du -h ${i}; echo "-----"; done
-
-400K	306b5609-1980-4f86-9630-9175e77c7154/index/fields
-313M	306b5609-1980-4f86-9630-9175e77c7154/index
-109M	306b5609-1980-4f86-9630-9175e77c7154/repository
-422M	306b5609-1980-4f86-9630-9175e77c7154
------
-216K	1c295154-1c5f-423c-9888-aae486517dc6/index/fields
-48M	1c295154-1c5f-423c-9888-aae486517dc6/index
-17M	1c295154-1c5f-423c-9888-aae486517dc6/repository
-65M	1c295154-1c5f-423c-9888-aae486517dc6
------
-224K	2413c2d4-bbfe-410f-97e8-4bda859e386f/index/fields
-48M	2413c2d4-bbfe-410f-97e8-4bda859e386f/index
-17M	2413c2d4-bbfe-410f-97e8-4bda859e386f/repository
-65M	2413c2d4-bbfe-410f-97e8-4bda859e386f
 -----
 
