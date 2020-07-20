@@ -121,7 +121,16 @@ Log Insight**通過Syslog**或它**自己的收集API**（稱為**CFAPI**）收�
 
 (1) vrliBucketInfo.sh: 取得目前Log Insight主機儲存桶資訊 
 
+> 程式執行前請先配置以下組態檔**li.passport**，其中包含
 
+>> \<loginsight\_ip>:\<root_password>
+
+```
+     # cat li.passport
+     192.168.1.100:P@ssw0rd
+```
+
+ 
 程式執行結果：
 
 ![](./pics/05_readme.png "vrliBucketInfo.sh")
@@ -156,6 +165,14 @@ Log Insight**通過Syslog**或它**自己的收集API**（稱為**CFAPI**）收�
 
 
 (3) showArchive.sh: 取得NFS封存日誌紀錄資訊
+> 程式執行前請先配置以下組態檔**my.passport**，其中包含
+
+>> \<root_password>
+
+```
+     # cat my.passport
+     root123
+```
 
 間單使用此程式便可查詢實際儲存狀態，程式執行結果：
 
