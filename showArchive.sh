@@ -36,5 +36,5 @@ echo -e "\n[TASK] show the archived information"
 tree ${mountPoint}
 
 ## show the last 2 archived files
-./getBucket.sh 2
+./getBucket.sh 
 

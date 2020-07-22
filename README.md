@@ -153,7 +153,7 @@ Log Insight**通過Syslog**或它**自己的收集API**（稱為**CFAPI**）收�
 
 > 87e1df43-20a5-444c-ae29-a771db5826cf  active    0  **2020-07-16 16:10:34**  --   --   --
 
-(2) getBucket.sh: 取得最後n個儲存桶檔案系統架構。預設n=1
+(2) getBucket.sh: 取得最後n個儲存桶檔案系統架構。預設n=2
 
 程式執行結果：
 
